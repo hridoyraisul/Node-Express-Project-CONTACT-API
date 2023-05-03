@@ -1,0 +1,6 @@
+youtube tutorial: https://www.youtube.com/watch?v=H9M02of22z4
+
+Database:
+connection-string: mongodb+srv://raisulhridoy:RNEl8bzEULSPIV8C@cluster0.dcn4alb.mongodb.net/ne_contact?retryWrites=true&w=majority
+username: raisulhridoy
+password: RNEl8bzEULSPIV8C
