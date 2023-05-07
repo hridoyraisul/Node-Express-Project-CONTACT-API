@@ -1,4 +1,5 @@
 const asyncHandler = require('express-async-handler');
+const { body, validationResult } = require('express-validator');
 const Contact = require("../models/contactModel");
 
 
@@ -11,11 +12,35 @@ const getAllContact  = asyncHandler(async (req, res) => {
 });
 
 const createNewContact = asyncHandler(async (req, res) => {
-        const {name, email, phone, password} = req.body;
-        if (!name || !email || !phone || !password){
+        // Define validation rules
+        const rules = [
+            body('name')
+                .notEmpty().withMessage('Name is required')
+                .isString().withMessage('Name is invalid'),
+            body('email')
+                .notEmpty().withMessage('Email is required')
+                .isEmail().withMessage('Email is invalid'),
+            body('phone')
+                .notEmpty().withMessage('Phone is required')
+                .isMobilePhone().withMessage('Phone is invalid'),
+            body('password')
+                .notEmpty().withMessage('Password is required')
+        ];
+        // Run validation
+        await Promise.all(rules.map(rule => rule.run(req)));
+        // Check for validation errors
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
             res.status(400);
-            throw new Error('name, email, phone, password fields are mandatory!');
+            throw new Error(errors.array()[0]['msg']);
         }
+
+        // OLD Validation
+        // const {name, email, phone, password} = req.body;
+        // if (!name || !email || !phone || !password){
+        //     res.status(400);
+        //     throw new Error('name, email, phone, password fields are mandatory!');
+        // }
         const contact = await Contact.create({
             name,
             email,
@@ -31,6 +56,29 @@ const createNewContact = asyncHandler(async (req, res) => {
 
 
 const updateContact = asyncHandler(async (req, res) => {
+    // Define validation rules
+    const rules = [
+        body('name')
+            .notEmpty().withMessage('Name is required')
+            .isString().withMessage('Name is invalid'),
+        body('email')
+            .notEmpty().withMessage('Email is required')
+            .isEmail().withMessage('Email is invalid'),
+        body('phone')
+            .notEmpty().withMessage('Phone is required')
+            .isMobilePhone().withMessage('Phone is invalid'),
+        body('password')
+            .notEmpty().withMessage('Password is required')
+    ];
+    // Run validation
+    await Promise.all(rules.map(rule => rule.run(req)));
+    // Check for validation errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        res.status(400);
+        throw new Error(errors.array()[0]['msg']);
+    }
+
     const contactID = req.params.id;
     const contact = await Contact.findById(contactID);
     if (!contact){
