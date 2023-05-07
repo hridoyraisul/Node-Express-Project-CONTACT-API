@@ -134,4 +134,13 @@ const removeUser = asyncHandler(async (req, res) => {
     }
 });
 
-module.exports = {registerNewUser, loginUser, getLoggedInUser, allUser, removeUser}
+const logoutUser = asyncHandler(async (req, res) => {
+    const user = req.user;
+    //logout user
+    res.status(200).json({
+        title: 'Logged out successfully!',
+        data: {}
+    });
+});
+
+module.exports = {registerNewUser, loginUser, getLoggedInUser, allUser, removeUser, logoutUser}
