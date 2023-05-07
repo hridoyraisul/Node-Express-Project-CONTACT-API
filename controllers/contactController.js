@@ -35,18 +35,7 @@ const createNewContact = asyncHandler(async (req, res) => {
             throw new Error(errors.array()[0]['msg']);
         }
 
-        // OLD Validation
-        // const {name, email, phone, password} = req.body;
-        // if (!name || !email || !phone || !password){
-        //     res.status(400);
-        //     throw new Error('name, email, phone, password fields are mandatory!');
-        // }
-        const contact = await Contact.create({
-            name,
-            email,
-            phone,
-            password
-        });
+        const contact = await Contact.create(req.body);
         res.status(201).json({
             title:'created contact for '+req.body.name,
             data: contact
