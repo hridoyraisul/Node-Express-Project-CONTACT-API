@@ -4,7 +4,7 @@ const Contact = require("../models/contactModel");
 
 
 const getAllContact  = asyncHandler(async (req, res) => {
-    const contacts = await Contact.find();
+    const contacts = await Contact.find({user_id: req.user.id});
     res.status(200).json({
         title:'All contacts from controller!',
         data: contacts
@@ -22,9 +22,7 @@ const createNewContact = asyncHandler(async (req, res) => {
                 .isEmail().withMessage('Email is invalid'),
             body('phone')
                 .notEmpty().withMessage('Phone is required')
-                .isMobilePhone().withMessage('Phone is invalid'),
-            body('password')
-                .notEmpty().withMessage('Password is required')
+                .isMobilePhone().withMessage('Phone is invalid')
         ];
         // Run validation
         await Promise.all(rules.map(rule => rule.run(req)));
@@ -35,6 +33,7 @@ const createNewContact = asyncHandler(async (req, res) => {
             throw new Error(errors.array()[0]['msg']);
         }
 
+        req.body.user_id = req.user.id;
         const contact = await Contact.create(req.body);
         res.status(201).json({
             title:'created contact for '+req.body.name,
@@ -55,9 +54,7 @@ const updateContact = asyncHandler(async (req, res) => {
             .isEmail().withMessage('Email is invalid'),
         body('phone')
             .notEmpty().withMessage('Phone is required')
-            .isMobilePhone().withMessage('Phone is invalid'),
-        body('password')
-            .notEmpty().withMessage('Password is required')
+            .isMobilePhone().withMessage('Phone is invalid')
     ];
     // Run validation
     await Promise.all(rules.map(rule => rule.run(req)));
@@ -74,6 +71,12 @@ const updateContact = asyncHandler(async (req, res) => {
         res.status(404);
         throw new Error(`Contact not found with ID ${contactID}`);
     }
+
+    if (contact.user_id.toString() !== req.user.id){
+        res.status(403);
+        throw new Error('Unauthorized attempt of update');
+    }
+
     const updatedContact = await Contact.findByIdAndUpdate(
         contactID,
         req.body,
@@ -92,6 +95,12 @@ const deleteContact = asyncHandler(async (req, res) => {
         res.status(404);
         throw new Error(`Contact not found with ID ${contactID}`);
     }
+
+    if (contact.user_id.toString() !== req.user.id){
+        res.status(403);
+        throw new Error('Unauthorized attempt of delete');
+    }
+
     await Contact.deleteOne({ _id: contactID });
     res.status(200).json({
         title:`Deleted contact for ID ${contactID}`,
@@ -106,6 +115,12 @@ const viewSingleContact = asyncHandler(async (req, res) => {
         res.status(404);
         throw new Error(`Contact not found with ID ${req.params.id}`);
     }
+
+    if (contact.user_id.toString() !== req.user.id){
+        res.status(403);
+        throw new Error('Unauthorized attempt of view');
+    }
+
     res.status(200).json({
         title:`view contact for ID ${req.params.id}`,
         data: contact

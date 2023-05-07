@@ -1,8 +1,8 @@
 const asyncHandler = require('express-async-handler');
-const {body, validationResult} =require('express-validator');
+const {body, validationResult} = require('express-validator');
 const User = require("../models/userModel");
 const bcrypt = require('bcrypt');
-const Contact = require("../models/contactModel");
+const jwt = require('jsonwebtoken');
 
 const allUser = asyncHandler(async (req, res) => {
     const users = await User.find();
@@ -13,7 +13,7 @@ const allUser = asyncHandler(async (req, res) => {
 });
 
 const registerNewUser = asyncHandler(async (req, res) => {
-    try{
+    // try{
         const rules = [
             body('name')
                 .notEmpty().withMessage('Name is required')
@@ -42,21 +42,23 @@ const registerNewUser = asyncHandler(async (req, res) => {
             throw new Error('This email is already used!');
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
-        req.body.password = hashedPassword;
+        req.body.password = await bcrypt.hash(password, 10);
         const user = await User.create(req.body);
         res.status(201).json({
             title: 'Registration done for user '+name,
-            data: user,
+            data: {
+                _id: user.id,
+                name: user.name,
+                email: user.email
+            },
         });
-    } catch (e) {
-        res.status(400);
-        throw new Error('Something went wrong!');
-    }
+    // } catch (e) {
+    //     res.status(400);
+    //     throw new Error('Something went wrong!');
+    // }
 });
 
 const loginUser = asyncHandler(async (req, res) => {
-    try{
         const rules = [
             body('email')
                 .notEmpty().withMessage('Email is required')
@@ -80,40 +82,56 @@ const loginUser = asyncHandler(async (req, res) => {
 
         const match = await bcrypt.compare(password, user.password);
         if (match){
+            const accessToken = await jwt.sign(
+                {
+                user_info: {
+                    name: user.name,
+                    email: user.email,
+                    id: user.id
+                }
+            }, process.env.ACCESS_TOKEN_SECRET,
+                {
+                    expiresIn: '30m'
+                }
+                );
             res.status(200).json({
                 title: 'Logged in user successfully!',
-                data: user
-            })
+                token: accessToken
+            });
         } else {
             res.status(403);
             throw new Error(`Password is wrong for the user ${user.name}`);
         }
+});
+
+const getLoggedInUser = asyncHandler(async (req, res) => {
+    const user = req.user;
+    res.status(200).json({
+        title: `Logged in information of user ${user.name}`,
+        data: {
+            _id: user.id,
+            name: user.name,
+            email: user.email
+        }
+    })
+});
+
+const removeUser = asyncHandler(async (req, res) => {
+    try{
+        const user = await User.findById(req.params.id);
+        if (!user){
+            res.status(404);
+            throw new Error(`User not found with ID ${req.params.id}`);
+        }
+        await User.deleteOne({ _id: req.params.id });
+        res.status(200).json({
+            title:`Removed user for ID ${req.params.id}`,
+            data: {}
+        });
     } catch (e) {
         res.status(400);
         throw new Error(`Something went wrong!`);
     }
 });
-
-const getLoggedInUser = asyncHandler(async (req, res) => {
-    const user = {};
-    res.status(200).json({
-        title: 'Logged in information of user ',
-        data: user
-    })
-});
-
-const removeUser = asyncHandler(async (req, res) => {
-    const userID = req.params.id;
-    const user = await User.findById(userID);
-    if (!user){
-        res.status(404);
-        throw new Error(`User not found with ID ${userID}`);
-    }
-    await User.deleteOne({ _id: userID });
-    res.status(200).json({
-        title:`Removed user for ID ${userID}`,
-        data: user
-    });
-})
 
 module.exports = {registerNewUser, loginUser, getLoggedInUser, allUser, removeUser}

@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
 const contactSchema = mongoose.Schema({
+    user_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: [true,"User ID is required"],
+        ref: "User"
+    },
     name: {
         type: String,
         required: [true,"Contact name is required"],
@@ -12,11 +17,7 @@ const contactSchema = mongoose.Schema({
     phone: {
         type: String,
         required: [true,"Contact phone number is required"],
-    },
-    password: {
-        type: String,
-        required: [true,"Contact password is required"],
-    },
+    }
 },
     {
         timestamps: true
