@@ -1,0 +1,272 @@
+{
+	"info": {
+		"_postman_id": "fd97e16e-2e6a-4cba-98bc-abc5972cb2af",
+		"name": "Node-Express-Contact",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21568700",
+		"_collection_link": "https://dark-crescent-786349.postman.co/workspace/RUL~481d47b6-4a70-46af-9fdc-0e66291ecdc5/collection/21568700-fd97e16e-2e6a-4cba-98bc-abc5972cb2af?action=share&creator=21568700&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "Contact",
+			"item": [
+				{
+					"name": "All Contact",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2luZm8iOnsibmFtZSI6IkFsZXggUm9jayBvaXVlcnRlcnR5IiwiZW1haWwiOiJydGU4OXI5OUBnbS5jb20iLCJpZCI6IjY0NTc0YmU4OThkNTZhYjdiNzhiMWEyYyJ9LCJpYXQiOjE2ODM0NTM5ODQsImV4cCI6MTY4MzQ1NTc4NH0.YS36me0qjVMfXHLaFaWB9V-mSLSeyKTlx9Ox3mM8TVw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/api/contacts/all",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"contacts",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Contact",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/api/contacts/create",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"contacts",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View contact",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/api/contacts/single/645233eb529f0fe677ab3c5c",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"contacts",
+								"single",
+								"645233eb529f0fe677ab3c5c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update contact",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Jon Doe Changed\",\r\n    \"email\": \"jon2@gmail.com\",\r\n    \"phone\": 132456798\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/contacts/update/64523acef28cf7944a217134",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"contacts",
+								"update",
+								"64523acef28cf7944a217134"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete conact",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/api/contacts/delete/13",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"contacts",
+								"delete",
+								"13"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Register User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Alex Rock ertertertx\",\r\n    \"email\": \"etertxxerte@gm.com\",\r\n    \"phone\": 123456789,\r\n    \"password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/users/register",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/api/users/all",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Log in user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"rte89r99@gm.com\",\r\n    \"password\": \"12345633\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/users/log-in",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users",
+								"log-in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logged In User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2luZm8iOnsibmFtZSI6IkFsZXggUm9jayBvaXVlcnRlcnR5IiwiZW1haWwiOiJydGU4OXI5OUBnbS5jb20iLCJpZCI6IjY0NTc0YmU4OThkNTZhYjdiNzhiMWEyYyJ9LCJpYXQiOjE2ODM0NTIxMTIsImV4cCI6MTY4MzQ1MzkxMn0.tL1x7fd8eg3qg5zsHx8ICcQGd_0HcKU7Eg8WCYZtDis",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/api/users/logged-in-user",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users",
+								"logged-in-user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove user",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/api/users/remove/64574be898d56ab7b78b1a26",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users",
+								"remove",
+								"64574be898d56ab7b78b1a26"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
