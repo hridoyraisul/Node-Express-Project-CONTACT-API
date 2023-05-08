@@ -1,7 +1,22 @@
 youtube tutorial: https://www.youtube.com/watch?v=H9M02of22z4
-(Continue from 53.36 min)
+
 
 Database:
 connection-string: mongodb+srv://raisulhridoy:RNEl8bzEULSPIV8C@cluster0.dcn4alb.mongodb.net/ne_contact?retryWrites=true&w=majority
 username: raisulhridoy
 password: RNEl8bzEULSPIV8C
+
+
+Docker:
+CMD
+    For build with new changes
+    => docker build -t raisulhridoy/express-contact-project:0.0.1.RELEASE .
+    For checking existing image
+    => docker ps
+    For checking running container
+    => docker container ls
+    For running specific container
+    => docker container run -d -p 5001:5000 raisulhridoy/express-contact-project:0.0.1.RELEASE
+    For stop a container
+    => docker container stop d919d7f5096c
+
